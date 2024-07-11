@@ -34,7 +34,6 @@ def detail(request, task_id):
     return render(request, "todo/detail.html", context)
 
 
-
 def clone(request, task_id):
     try:
         task = Task.objects.get(pk=task_id)
@@ -42,4 +41,11 @@ def clone(request, task_id):
         raise Http404("Task does not exist")
     task.completed = True
     task.save()
+   
+def delete(request, task_id):
+    try:
+        task = Task.object.get(pk=task_id)
+    except Task.DoesNotExist:
+        raise Http404("Task dose not exist")
+    task.delete()
     return redirect(index)
