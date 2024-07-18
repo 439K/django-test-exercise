@@ -3,7 +3,8 @@
 <html lang="ja">
 
   <head>
-    <title>To Do Application</title>
+    <title>タスクの詳細</title>
+    <link rel="stylesheet" href="{% static 'todo/css/default.css' %}">
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
   </head>
@@ -11,22 +12,23 @@
   <body>
     <h1>詳細ページ</h1>
     <ul>
-      <li>投稿先</li>
+      <li>投稿日時: {{ task.posted_at }}</li>
       {% if task.due_at %}
-      <li>期限</li>
+      <li>期限: {{ task.due_at }}</li>
       {% endif %}
       {% if task.completed %}
-      <li>完了</li>
+      <li style="color: green;">状態: 完了</li>
       {% else %}
-      <li>未完了</li>
+      <li style="color: red;">状態: 未完了</li>
       {% endif %}
     </ul>
 
     <div>
-      <a href="{% url 'index' %}">Top</a>
-      | <a href="{% url 'update' task.id %}">Edit</a>
-      <a href="{% url 'close' task.id %}">Close</a>
-      <a href="{% url 'delete' task.id %}">Delete</a>
+      <a href="{% url 'index' %}">トップページへ戻る</a>
+      | 
+      <a href="{% url 'update' task.id %}">編集</a>
+      <a href="{% url 'close' task.id %}">完了にする</a>
+      <a href="{% url 'delete' task.id %}">削除</a>
     </div>
   </body>
 

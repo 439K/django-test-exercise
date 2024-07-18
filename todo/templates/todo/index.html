@@ -4,18 +4,24 @@
 
   <head>
     <title>To Do Application</title>
+    <link rel="stylesheet" href="{% static 'todo/css/default.css' %}">
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
   </head>
 
   <body>
-    <h1>Sample To Do Application</h1>
+    <h1>To Do Application</h1>
     <p>以下のフォームからタスクを送信できます。</p>
+
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+
     <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
       <div>
         <label for="titleInput">タイトル</label><br>
-        <input id="titleInput" name="title" type="text" placeholder="Input title">
+        <input id="titleInput" name="title" type="text" placeholder="タイトルを入力">
       </div>
       <div>
         <label for="dueInput">締め切り:</label><br>
@@ -36,14 +42,14 @@
     <div class="text">
       <h2><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h2>
       <ul>
-        <li>掲載場所: {{ task.posted_at }}</li>
+        <li>投稿日時: {{ task.posted_at }}</li>
         {% if task.due_at %} 
-        <li>締め切り: {{ task.due_at }}</li>
+        <li>期限: {{ task.due_at }}</li>
         {% endif %}
         {% if task.completed %} 
-        <li>状態: 完了</li>
+        <li style="color: green;">状態: 完了</li>
         {% else %}
-        <li>状態: 未完了</li>
+        <li style="color: red;">状態: 未完了</li>
         {% endif %}
       </ul>
     </div>
