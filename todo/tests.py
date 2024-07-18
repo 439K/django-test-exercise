@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime
 from todo.models import Task
@@ -67,11 +68,14 @@ class TodoViewTestCase(TestCase):
     def test_index_post(self):
         client = Client()
         data = {"title": "Test Task", "due_at": "2024-06-30 23:59:59"}
-        response = client.post("/", data)
+        response = client.post(reverse('index'), data)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.templates[0].name, "todo/index.html")
-        self.assertEqual(len(response.context["tasks"]), 1)
+        self.assertEqual(response.status_code, 302)  # リダイレクトを期待
+        self.assertRedirects(response, reverse('index'))  # リダイレクト先を確認
+
+        tasks = Task.objects.all()
+        self.assertEqual(tasks.count(), 1)
+        self.assertEqual(tasks[0].title, "Test Task")
 
     def test_index_get_order_post(self):
         task1 = Task(title="task1", due_at=timezone.make_aware(datetime(2024, 7, 1)))
